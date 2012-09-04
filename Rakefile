@@ -17,8 +17,8 @@ Jeweler::Tasks.new do |gem|
   gem.name = "gtk3assist"
   gem.homepage = "http://github.com/kaspernj/gtk3assist"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.summary = %Q{A class for making it easier to develop Gtk3 based applications with the 'gir_ffi-gtk'-gem.}
+  gem.description = %Q{A class for making it easier to develop Gtk3 based applications with the 'gir_ffi-gtk'-gem.}
   gem.email = "k@spernj.org"
   gem.authors = ["Kasper Johansen"]
   # dependencies defined in Gemfile
