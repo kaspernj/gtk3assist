@@ -53,8 +53,10 @@ class Gtk3assist::Msgbox
       when :warning, :info
         if args[:type] == :info
           image = Gtk::Image.new_from_stock(Gtk::STOCK_DIALOG_INFORMATION, Gtk::IconSize[:dialog])
-        else
+        elsif args[:type] == :warning
           image = Gtk::Image.new_from_stock(Gtk::STOCK_DIALOG_WARNING, Gtk::IconSize[:dialog])
+        else
+          raise "Unknown type: '#{args[:type]}'."
         end
         
         box.pack_start(image, false, false, 4)

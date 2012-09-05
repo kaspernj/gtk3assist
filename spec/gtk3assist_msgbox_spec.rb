@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
-describe "Gtk3assist_treeview" do
+describe "Gtk3assist_msgbox" do
   it "should work" do
     Gtk.init
     
