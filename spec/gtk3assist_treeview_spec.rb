@@ -26,7 +26,7 @@ describe "Gtk3assist_treeview" do
     count = 0
     tva.rows do |data|
       count += 1
-      puts data
+      #puts data
     end
     
     raise "Expected count to be 2 but it wasnt: '#{count}'." if count != 2
@@ -35,6 +35,6 @@ describe "Gtk3assist_treeview" do
     win.add(tv)
     win.show_all
     
-    Gtk.main
+    #Gtk.main
   end
 end
