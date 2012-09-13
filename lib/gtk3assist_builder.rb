@@ -4,7 +4,7 @@ class Gtk3assist::Builder
   ARGS_ALLOWED = [:builder]
   
   #Constructor.
-  def initialize(args)
+  def initialize(args = {})
     raise "'args' was not a hash." if !args.is_a?(Hash)
     args.each do |key, val|
       raise "Invalid argument: '#{key}'." if !ARGS_ALLOWED.include?(key)
@@ -16,7 +16,11 @@ class Gtk3assist::Builder
   #Adds the given filepath to the builder and sets filepath for signal-connects.
   def add_from_file(fpath)
     @fpath = fpath
+    
+    @builder = Gtk::Builder.new if !@builder
     @builder.add_from_file(fpath)
+    
+    return self
   end
   
   #Returns a widget from a given key.

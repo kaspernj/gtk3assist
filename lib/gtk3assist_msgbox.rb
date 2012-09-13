@@ -23,6 +23,7 @@ class Gtk3assist::Msgbox
     end
     
     raise "No ':msg' was given." if args[:msg].to_s.strip.empty?
+    args[:type] = :info if !args[:type]
     
     if !args[:title]
       case args[:type]
@@ -52,7 +53,7 @@ class Gtk3assist::Msgbox
     case args[:type]
       when :warning, :info
         if args[:type] == :info
-          image = Gtk::Image.new_from_stock(Gtk::STOCK_DIALOG_INFORMATION, Gtk::IconSize[:dialog])
+          image = Gtk::Image.new_from_stock(Gtk::STOCK_DIALOG_INFO, Gtk::IconSize[:dialog])
         elsif args[:type] == :warning
           image = Gtk::Image.new_from_stock(Gtk::STOCK_DIALOG_WARNING, Gtk::IconSize[:dialog])
         else
@@ -73,6 +74,7 @@ class Gtk3assist::Msgbox
         but.signal_connect("clicked") do
           @result = Gtk::ResponseType[:ok]
           @dialog.response(@result)
+          @dialog.destroy
         end
         
         res = Gtk::ResponseType[:ok]
