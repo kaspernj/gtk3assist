@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "gtk3assist"
-  s.version = "0.0.1"
+  s.version = "0.0.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Kasper Johansen"]
-  s.date = "2012-09-05"
+  s.date = "2012-09-13"
   s.description = "A class for making it easier to develop Gtk3 based applications with the 'gir_ffi-gtk'-gem."
   s.email = "k@spernj.org"
   s.extra_rdoc_files = [
@@ -25,11 +25,16 @@ Gem::Specification.new do |s|
     "README.rdoc",
     "Rakefile",
     "VERSION",
+    "gtk3assist.gemspec",
     "lib/gtk3assist.rb",
     "lib/gtk3assist_builder.rb",
+    "lib/gtk3assist_combobox.rb",
+    "lib/gtk3assist_msgbox.rb",
     "lib/gtk3assist_treeview.rb",
     "spec/gtk3assist_builder.glade",
     "spec/gtk3assist_builder_spec.rb",
+    "spec/gtk3assist_combobox_spec.rb",
+    "spec/gtk3assist_msgbox_spec.rb",
     "spec/gtk3assist_treeview_spec.rb",
     "spec/spec_helper.rb"
   ]
