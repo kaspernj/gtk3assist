@@ -30,7 +30,7 @@ describe "Gtk3assist_combobox" do
     raise "Expected selected title to be 'Kasper' but it wasnt: '#{data[:data][:title]}'." if data[:data][:title] != "Christina"
     
     count = 0
-    cba.rows do |data|
+    cba.items do |data|
       #puts data
       count += 1
     end
