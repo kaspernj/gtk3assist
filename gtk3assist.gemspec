@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = "gtk3assist"
-  s.version = "0.0.5"
+  s.version = "0.0.6"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Kasper Johansen"]
@@ -30,6 +30,7 @@ Gem::Specification.new do |s|
     "lib/gtk3assist_builder.rb",
     "lib/gtk3assist_combobox.rb",
     "lib/gtk3assist_msgbox.rb",
+    "lib/gtk3assist_threadding.rb",
     "lib/gtk3assist_treeview.rb",
     "spec/gtk3assist_builder.glade",
     "spec/gtk3assist_builder_spec.rb",
