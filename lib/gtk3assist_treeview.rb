@@ -39,7 +39,7 @@ class Gtk3assist::Treeview
   def init_liststore
     liststore_args = []
     @columns.each do |col_data|
-      if col_data[:type] == :string
+      if col_data[:type] == :string or !col_data[:type]
         liststore_args << GObject::TYPE_STRING
       else
         raise "Unknown column-type: '#{col_data[:type]}'."
@@ -81,6 +81,9 @@ class Gtk3assist::Treeview
   
   #Add a new row to the treeview.
   def add_row(args)
+    raise "''args' wasnt a hash." if !args.is_a?(Hash)
+    raise "No ':data'-array was given." if !args[:data]
+    
     if @model.is_a?(Gtk::ListStore)
       data = []
       @columns.each do |col_data|
@@ -101,7 +104,7 @@ class Gtk3assist::Treeview
       data.each do |val|
         col_data = @columns[count]
         
-        if col_data[:type] == :string
+        if col_data[:type] == :string or !col_data[:type]
           @model.set_value(iter, count, val.to_s)
         else
           raise "Unknown column-type: '#{col_data[:type]}'."
@@ -109,6 +112,8 @@ class Gtk3assist::Treeview
         
         count += 1
       end
+      
+      return {:iter => iter}
     else
       raise "Unknown model: '#{@model.class.name}'."
     end
@@ -121,18 +126,28 @@ class Gtk3assist::Treeview
       
       while iter_cur
         match = true
+        sel_val = @tv.get_selection.iter_is_selected(iter_cur) rescue false
+        match = false if args and args[:selected] and !sel_val
         
         if match
-          data = []
+          data = {}
+          count = 0
+          
           @columns.each do |col_data|
-            if col_data[:type] == :string
-              data << @model.get_value(iter_cur, 1).get_string
+            if col_data[:type] == :string or !col_data[:type]
+              data[col_data[:id]] = @model.get_value(iter_cur, count).get_string
             else
               raise "Unknown column-type: '#{col_data[:type]}'."
             end
+            
+            count += 1
           end
           
-          y << {:data => data}
+          y << {
+            :sel => sel_val,
+            :data => data,
+            :iter => iter_cur
+          }
         end
         
         break if !@model.iter_next(iter_cur)
@@ -144,5 +159,14 @@ class Gtk3assist::Treeview
     else
       return enum
     end
+  end
+  
+  #Returns the first selected row found.
+  def sel
+    self.rows(:selected => true).each do |data|
+      return data if data[:sel]
+    end
+    
+    return nil
   end
 end
