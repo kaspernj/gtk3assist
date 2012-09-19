@@ -9,4 +9,11 @@ class Gtk3assist
     raise "Still not defined: '#{name}'." if !Gtk3assist.const_defined?(name)
     return Gtk3assist.const_get(name)
   end
+  
+  #Enables other threads to be run and interrupts to be used (<CTRL> + <C>).
+  def self.enable_threadding
+    return nil if @enable_threadding
+    @enable_threadding = true
+    GLib.idle_add(GLib::PRIORITY_DEFAULT_IDLE, Proc.new{Thread.pass; true}, nil, nil)
+  end
 end
