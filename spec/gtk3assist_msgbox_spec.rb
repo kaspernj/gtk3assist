@@ -17,5 +17,13 @@ describe "Gtk3assist_msgbox" do
     msg.respond(:yes)
     res = msg.result_text
     raise "Expected yes but got: '#{res}'." if res != :yes
+    
+    
+    begin
+      raise "test"
+    rescue => e
+      msg = Gtk3assist::Msgbox.error(e, :run => false)
+      msg.respond(:ok)
+    end
   end
 end

@@ -9,4 +9,13 @@ class Gtk3assist
     raise "Still not defined: '#{name}'." if !Gtk3assist.const_defined?(name)
     return Gtk3assist.const_get(name)
   end
+  
+  #Sends the given text to GetText or returns the string if GetText is not loaded.
+  def self._(str)
+    if ::Kernel.const_defined?(:GetText)
+      ::GetText._(str)
+    else
+      return str
+    end
+  end
 end

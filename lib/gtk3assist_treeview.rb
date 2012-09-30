@@ -7,7 +7,7 @@ class Gtk3assist::Treeview
   attr_reader :model
   
   #An array of allowed arguments for the 'initialize'-method.
-  ALLOWED_ARGS = [:tv, :cols, :model]
+  ALLOWED_ARGS = [:tv, :cols, :model, :sort_col]
   
   #Constructor.
   def initialize(args)
@@ -17,6 +17,7 @@ class Gtk3assist::Treeview
     end
     
     @columns = []
+    @column_count = 0
     @tv = args[:tv]
     raise "No ':tv' argument was given." if !@tv.is_a?(Gtk::TreeView)
     
@@ -33,6 +34,8 @@ class Gtk3assist::Treeview
         raise "Unknown model: '#{args[:model]}'."
       end
     end
+    
+    self.sort_col = args[:sort_col] if args.key?(:sort_col)
   end
   
   #Initializes a new list-store on the treeview.
@@ -48,6 +51,20 @@ class Gtk3assist::Treeview
     
     @model = Gtk::ListStore.new(liststore_args)
     @tv.set_model(@model)
+  end
+  
+  def sort_col=(col_id)
+    count = 0
+    @columns.each do |col_data|
+      if col_data[:id] == col_id
+        @model.set_sort_column_id(count, Gtk::SortType[:ascending])
+        return nil
+      end
+      
+      count += 1
+    end
+    
+    raise "Could not find a column by that ID: '#{col_id}'."
   end
   
   #Adds a new column to the treeview.
@@ -70,6 +87,7 @@ class Gtk3assist::Treeview
     
     lab.show
     @tv.append_column(col)
+    count = @column_count
     
     @columns << {
       :col => col,
@@ -119,6 +137,33 @@ class Gtk3assist::Treeview
     end
   end
   
+  def rows_remove(args = nil)
+    #Containing the ID's that should be removed (minus length to account for cursor changes).
+    removes = []
+    
+    #Avoid counting length of 'removes' all the time.
+    removes_count = 0
+    
+    #Calculate which rows should be removed by yield'ing and checking for true. Then adding ID (minus remove-count) to 'removes'-array.
+    self.rows(args) do |data|
+      res = yield(data)
+      
+      if res == true
+        removes << @model.path(data[:iter]).to_string.to_i - removes_count
+        removes_count += 1
+      end
+    end
+    
+    #Remove rows by their IDs (minus removes-count).
+    removes.each do |id|
+      path = Gtk::TreePath.new_from_string(id.to_s)
+      iter = @model.iter(path).last
+      @model.remove(iter)
+    end
+    
+    return nil
+  end
+  
   #Enumerates over every row in the treeview.
   def rows(args = nil, &block)
     enum = Enumerator.new do |y|
@@ -156,6 +201,7 @@ class Gtk3assist::Treeview
     
     if block
       enum.each(&block)
+      return nil
     else
       return enum
     end

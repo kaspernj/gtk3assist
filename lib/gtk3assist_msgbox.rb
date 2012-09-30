@@ -11,6 +11,15 @@ class Gtk3assist::Msgbox
   #The result of the dialog.
   attr_reader :result
   
+  def self.error(e, args = {})
+    msg = Gtk3assist._("An error occurred.")
+    msg << "\n\n"
+    msg << "<#{e.class.name}: #{e.message}>\n"
+    msg << e.backtrace.join("\n")
+    
+    return Gtk3assist::Msgbox.new(args.merge(:type => :warning, :msg => msg))
+  end
+  
   def self.current
     raise "No current showing message-box." if !DATA[:current]
   end
@@ -28,11 +37,11 @@ class Gtk3assist::Msgbox
     if !args[:title]
       case args[:type]
         when :warning
-          args[:title] = _("Warning")
+          args[:title] = Gtk3assist._("Warning")
         when :yesno
-          args[:title] = _("Question")
+          args[:title] = Gtk3assist._("Question")
         when :info
-          args[:title] = _("Information")
+          args[:title] = Gtk3assist._("Information")
         else
           raise "Unknown type: '#{args[:type]}'."
       end
@@ -138,15 +147,5 @@ class Gtk3assist::Msgbox
   def result_text
     raise "No result yet." if !@result
     return Gtk::ResponseType[@result].to_sym
-  end
-  
-  #Contains a fallback method for '_' which is used to translate texts in the GetText-library.
-  def method_missing(method, *args, &block)
-    case method
-      when :_
-        return args[0]
-      else
-        raise NameError, "No such method: '#{method}'."
-    end
   end
 end

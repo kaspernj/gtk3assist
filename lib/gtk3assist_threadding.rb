@@ -24,11 +24,17 @@ class Gtk3assist::Threadding
     Thread.pass
     t_run = Time.now.to_f - t_begin
     
-    if t_run < 0.0001
+    if t_run < 0.00001
+      #Somehow the idle or timeout gets ignored unless this is here.
+      Thread.pass
+      
       #Run again after a small amount of time to prevent 100% CPU.
       GLib.timeout_add(GLib::PRIORITY_DEFAULT_IDLE, @time, self.method(:enable_threadding_pass), nil, nil)
       return false
     else
+      #Somehow the idle or timeout gets ignored unless this is here.
+      Thread.pass
+      
       #Run again on next idle.
       GLib.idle_add(GLib::PRIORITY_DEFAULT_IDLE, self.method(:enable_threadding_pass), nil, nil)
       return false
