@@ -53,9 +53,7 @@ class Gtk3assist::Builder
             #Convert arguments to fit the arity-count of the Proc-object (the block, the method or whatever you want to call it).
             newargs = []
             0.upto(method.arity - 1) do |number|
-              if paras[number]
-                newargs << args[number]
-              end
+              newargs << args[number] if args[number]
             end
             
             method.call(*newargs)
