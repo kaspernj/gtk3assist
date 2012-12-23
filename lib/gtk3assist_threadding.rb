@@ -12,6 +12,8 @@ class Gtk3assist::Threadding
       @time = 100
     end
     
+    @method = self.method(:enable_threadding_pass)
+    
     #Call the method (which then calls itself based on timings).
     enable_threadding_pass
   end
@@ -29,14 +31,14 @@ class Gtk3assist::Threadding
       Thread.pass
       
       #Run again after a small amount of time to prevent 100% CPU.
-      GLib.timeout_add(GLib::PRIORITY_DEFAULT_IDLE, @time, self.method(:enable_threadding_pass), nil, nil)
+      GLib.timeout_add(GLib::PRIORITY_DEFAULT_IDLE, @time, @method, nil, nil)
       return false
     else
       #Somehow the idle or timeout gets ignored unless this is here.
       Thread.pass
       
       #Run again on next idle.
-      GLib.idle_add(GLib::PRIORITY_DEFAULT_IDLE, self.method(:enable_threadding_pass), nil, nil)
+      GLib.idle_add(GLib::PRIORITY_DEFAULT_IDLE, @method, nil, nil)
       return false
     end
   end
