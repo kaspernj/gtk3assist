@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "gtk3assist"
-  s.version = "0.0.8"
+  s.version = "0.0.9"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Kasper Johansen"]
-  s.date = "2012-10-01"
+  s.date = "2013-02-24"
   s.description = "A class for making it easier to develop Gtk3 based applications with the 'gir_ffi-gtk'-gem."
   s.email = "k@spernj.org"
   s.extra_rdoc_files = [
@@ -42,7 +42,7 @@ Gem::Specification.new do |s|
   s.homepage = "http://github.com/kaspernj/gtk3assist"
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
-  s.rubygems_version = "1.8.24"
+  s.rubygems_version = "1.8.25"
   s.summary = "A class for making it easier to develop Gtk3 based applications with the 'gir_ffi-gtk'-gem."
 
   if s.respond_to? :specification_version then
