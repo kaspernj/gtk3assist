@@ -18,10 +18,25 @@ class Gtk3assist::Threadding
     enable_threadding_pass
   end
   
+  #Only enables the threadding if it is necessary (its not necessary on JRuby).
+  def self.enable_threadding_if_necessary(args = nil)
+    if RUBY_ENGINE != "jruby"
+      enable = true
+    else
+      enable = false
+    end
+    
+    Gtk3assist::Threadding.enable_threadding(args) if enable
+  end
+  
   private
   
   #Passes to another running thread. Based on the time something else is running, the pass will be called again as soon as possible or waiting a small amount of time to check again if not.
   def self.enable_threadding_pass(*args)
+    GLib.idle_add(GLib::PRIORITY_DEFAULT_IDLE, Proc.new{Thread.pass; sleep 0.01; true}, nil, nil)
+    
+    return nil
+    
     t_begin = Time.now.to_f
     Thread.pass
     t_run = Time.now.to_f - t_begin
